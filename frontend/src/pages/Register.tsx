@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
-import { useMutation } from "react-query";
 import * as apiClinet from "../api-client";
+import { useMutation } from "@tanstack/react-query";
 
 export type RegisterFormData = {
   firstName: string;
@@ -18,7 +18,8 @@ const Register = () => {
     formState: { errors },
   } = useForm<RegisterFormData>();
 
-  const mutation = useMutation(apiClinet.register, {
+  const mutation = useMutation({
+    mutationFn: apiClinet.register,
     onSuccess: () => {
       console.log("Registration Successful!");
     },
