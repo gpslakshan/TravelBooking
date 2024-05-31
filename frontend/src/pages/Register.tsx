@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import * as apiClinet from "../api-client";
 import { useMutation } from "@tanstack/react-query";
+import { useAppContext } from "../contexts/AppContext";
 
 export type RegisterFormData = {
   firstName: string;
@@ -11,6 +12,8 @@ export type RegisterFormData = {
 };
 
 const Register = () => {
+  const { showToast } = useAppContext();
+
   const {
     register,
     watch,
@@ -21,10 +24,10 @@ const Register = () => {
   const mutation = useMutation({
     mutationFn: apiClinet.register,
     onSuccess: () => {
-      console.log("Registration Successful!");
+      showToast({ message: "Registration Successful!", type: "SUCCESS" });
     },
     onError: (error: Error) => {
-      console.log(error.message);
+      showToast({ message: error.message, type: "ERROR" });
     },
   });
 
