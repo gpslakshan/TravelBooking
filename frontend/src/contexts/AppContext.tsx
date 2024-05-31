@@ -6,12 +6,15 @@ type ToastMessage = {
   type: "SUCCESS" | "ERROR";
 };
 
+// 1. Define the type of the context (which holds all the properties and functions that we're going to expose to our components.)
 type AppContext = {
   showToast: (toastMessage: ToastMessage) => void;
 };
 
+// 2. Create the context
 const AppContext = React.createContext<AppContext | undefined>(undefined);
 
+// 3. Create the provider (provider is a component that wraps our components)
 export const AppContextProvider = ({
   children,
 }: {
@@ -39,6 +42,7 @@ export const AppContextProvider = ({
   );
 };
 
+// 4. Create a custom hook which lets our components easily access the provider
 export const useAppContext = () => {
   const context = useContext(AppContext);
   return context as AppContext;
