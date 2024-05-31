@@ -34,7 +34,7 @@ export const AppContextProvider = ({
         <Toast
           message={toast.message}
           type={toast.type}
-          onClose={() => setToast(undefined)}
+          onClose={() => setToast(undefined)} // when the toast variable's state changes, it causes a re-render of the component.
         />
       )}
       {children}
