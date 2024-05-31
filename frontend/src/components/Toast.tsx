@@ -14,7 +14,7 @@ const Toast = ({ message, type, onClose }: ToastProps) => {
 
     return () => {
       clearTimeout(timer);
-    };
+    }; // Cleanup function -> Cleanup function should stop or undo whatever the effect is doing
   }, [onClose]);
 
   const styles =
