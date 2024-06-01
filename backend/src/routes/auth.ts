@@ -58,4 +58,11 @@ router.get("/validate-token", verifyToken, (req: Request, res: Response) => {
   res.status(200).send({ userId: req.userId });
 });
 
+router.post("/logout", (req: Request, res: Response) => {
+  // Return an empty token as part of auth_token httponly cookie
+  res.cookie("auth_token", "", {
+    expires: new Date(0), // This token expires at the time of creation.
+  });
+});
+
 export default router;
