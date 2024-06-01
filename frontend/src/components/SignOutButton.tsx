@@ -1,13 +1,15 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import * as apiClient from "../api-client";
 import { useAppContext } from "../contexts/AppContext";
 
 const SignOutButton = () => {
+  const queryClient = useQueryClient();
   const { showToast } = useAppContext();
 
   const mutation = useMutation({
     mutationFn: apiClient.signOut,
-    onSuccess: () => {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["validateToken"] }); // Invalidating the cache for the defined query key -> After that the React Query will refetch the data from the backend (This was done to fix the bug in Header when showing different nav links based on the authentication status)
       showToast({ message: "Signed Out!", type: "SUCCESS" });
     },
     onError: (error: Error) => {
