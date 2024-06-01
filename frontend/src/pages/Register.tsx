@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import * as apiClinet from "../api-client";
 import { useMutation } from "@tanstack/react-query";
 import { useAppContext } from "../contexts/AppContext";
+import { useNavigate } from "react-router-dom";
 
 export type RegisterFormData = {
   firstName: string;
@@ -12,6 +13,7 @@ export type RegisterFormData = {
 };
 
 const Register = () => {
+  const navigate = useNavigate();
   const { showToast } = useAppContext();
 
   const {
@@ -25,6 +27,7 @@ const Register = () => {
     mutationFn: apiClinet.register,
     onSuccess: () => {
       showToast({ message: "Registration Successful!", type: "SUCCESS" });
+      navigate("/");
     },
     onError: (error: Error) => {
       showToast({ message: error.message, type: "ERROR" });
