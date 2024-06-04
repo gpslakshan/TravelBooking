@@ -21,15 +21,29 @@ export type HotelFormData = {
 
 const ManageHotelForm = () => {
   const formMethods = useForm<HotelFormData>();
+  const { handleSubmit } = formMethods;
+
+  const onSubmit = handleSubmit((formData: HotelFormData) => {
+    // create new FormData object & call our API
+    console.log(formData);
+  });
 
   return (
     <FormProvider {...formMethods}>
-      <form className="flex flex-col gap-10">
+      <form className="flex flex-col gap-10" onSubmit={onSubmit}>
         <DetailsSection />
         <TypesSection />
         <FacilitiesSection />
         <GuestsSection />
         <ImagesSection />
+        <span className="flex justify-end">
+          <button
+            type="submit"
+            className="bg-blue-600 text-white p-2 font-bold rounded hover:bg-blue-500 text-xl"
+          >
+            Save
+          </button>
+        </span>
       </form>
     </FormProvider>
   );
