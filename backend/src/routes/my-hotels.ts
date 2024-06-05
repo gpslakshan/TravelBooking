@@ -1,3 +1,8 @@
+// Code Explanation - https://chatgpt.com/share/e36567f6-285a-4d66-b1d6-416dd93e4aea
+// Multer - Multer is a node.js middleware for handling multipart/form-data, which is primarily used for uploading files.
+// NOTE: Multer will not process any form which is not multipart (multipart/form-data).
+// MERN File Uploads Guide - https://chatgpt.com/share/7c6bc79c-bc81-4a55-8468-4dd70dff167b
+
 import express, { Request, Response } from "express";
 import multer from "multer";
 import cloudinary from "cloudinary";
@@ -34,7 +39,7 @@ router.post(
       .isArray()
       .withMessage("Facilities are required"),
   ],
-  upload.array("imageFiles", 6),
+  upload.array("imageFiles", 6), // Middleware to handle an array of up to 6 image files.
   async (req: Request, res: Response) => {
     try {
       const imageFiles = req.files as Express.Multer.File[];
@@ -42,13 +47,13 @@ router.post(
 
       // 1. Upload the images to cloudinary
       const uploadPromises = imageFiles.map(async (image) => {
-        const b64 = Buffer.from(image.buffer).toString("base64"); // Converting the image to base 64 string, so that it can be processed by cloudinary
+        const b64 = Buffer.from(image.buffer).toString("base64");
         let dataURI = "data:" + image.mimetype + ";base64," + b64;
         const res = await cloudinary.v2.uploader.upload(dataURI);
         return res.url;
       });
 
-      const imageUrls = await Promise.all(uploadPromises); // Wait for all the images to be uploaded (Images will be uploaded to the cloudinary asynchronously)
+      const imageUrls = await Promise.all(uploadPromises);
 
       // 2. If upload was successful, add the URLs to the new hotel and add other properties which are not in the req.body
       newHotel.imageUrls = imageUrls;
