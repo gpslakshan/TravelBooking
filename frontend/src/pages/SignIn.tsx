@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import * as apiClinet from "../api-client";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAppContext } from "../contexts/AppContext";
 
 export type SignInFormData = {
@@ -20,12 +20,14 @@ const SignIn = () => {
   const { showToast } = useAppContext();
   const queryClient = useQueryClient();
 
+  const location = useLocation();
+
   const mutation = useMutation({
     mutationFn: apiClinet.signIn,
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["validateToken"] }); // Invalidating the cache for the defined query key -> After that the React Query will refetch the data from the backend (This was done to fix the bug in Header when showing different nav links based on the authentication status)
       showToast({ message: "Sign in Successful!", type: "SUCCESS" });
-      navigate("/");
+      navigate(location.state?.from?.pathname || "/");
     },
     onError: (error: Error) => {
       showToast({ message: error.message, type: "ERROR" });
