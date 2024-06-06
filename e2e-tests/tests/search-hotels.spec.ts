@@ -26,3 +26,14 @@ test("should show hotel search results", async ({ page }) => {
   await expect(page.getByText("Hotels found in Colombo")).toBeVisible();
   await expect(page.getByText("Majestic Suites")).toBeVisible();
 });
+
+test("should show hotel detail", async ({ page }) => {
+  await page.goto(UI_URL);
+
+  await page.getByPlaceholder("Where are you going?").fill("Colombo");
+  await page.getByRole("button", { name: "Search" }).click();
+
+  await page.getByText("Majestic Suites").click();
+  await expect(page).toHaveURL(/detail/); // /detail/ is a ReGex
+  await expect(page.getByRole("button", { name: "Book now" })).toBeVisible();
+});
