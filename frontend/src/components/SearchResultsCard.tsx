@@ -35,7 +35,19 @@ const SearchResultsCard = ({ hotel }: Props) => {
 
         <div className="line-clamp-4">{hotel.description}</div>
 
-        <div className="grid grid-cols-2 items-end whitespace-nowrap">
+        {/* Show in Smaller Devices < 1536px in width */}
+        <div className="flex gap-2 items-center 2xl:hidden">
+          <span className="font-bold">${hotel.pricePerNight} per night</span>
+          <Link
+            to={`/detail/${hotel._id}`}
+            className="bg-blue-600 text-white h-fit p-2 font-bold text-xl max-w-fit hover:bg-blue-500"
+          >
+            View More
+          </Link>
+        </div>
+
+        {/* Show in Larger Devices > 1536px in width */}
+        <div className="hidden 2xl:grid 2xl:grid-cols-2 items-end whitespace-nowrap">
           <div className="flex gap-1 items-center">
             {hotel.facilities.slice(0, 3).map((facility) => (
               <span className="bg-slate-300 p-2 rounded-lg font-bold text-xs whitespace-nowrap">
