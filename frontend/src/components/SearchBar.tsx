@@ -28,6 +28,21 @@ const SearchBar = () => {
     navigate("/search");
   };
 
+  const handleClear = () => {
+    setDestination("");
+    setCheckIn(new Date());
+    setCheckOut(new Date());
+    setAdultCount(1);
+    setChildCount(0);
+    search.saveSearchValues("", new Date(), new Date(), 1, 0);
+
+    sessionStorage.removeItem("destination");
+    sessionStorage.removeItem("checkIn");
+    sessionStorage.removeItem("checkOut");
+    sessionStorage.removeItem("adultCount");
+    sessionStorage.removeItem("childCount");
+  };
+
   const minDate = new Date();
   const maxDate = new Date();
   maxDate.setFullYear(maxDate.getFullYear() + 1); // 1 year from now
@@ -106,10 +121,17 @@ const SearchBar = () => {
       </div>
 
       <div className="flex gap-1">
-        <button className="w-2/3 bg-blue-600 text-white h-full p-2 font-bold text-xl hover:bg-blue-500">
+        <button
+          type="submit"
+          className="w-2/3 bg-blue-600 text-white h-full p-2 font-bold text-xl hover:bg-blue-500"
+        >
           Search
         </button>
-        <button className="w-1/3 bg-red-600 text-white h-full p-2 font-bold text-xl hover:bg-red-500">
+        <button
+          type="button"
+          className="w-1/3 bg-red-600 text-white h-full p-2 font-bold text-xl hover:bg-red-500"
+          onClick={handleClear}
+        >
           Clear
         </button>
       </div>
