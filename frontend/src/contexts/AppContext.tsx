@@ -2,22 +2,25 @@ import React, { useContext, useState } from "react";
 import Toast from "../components/Toast";
 import { useQuery } from "@tanstack/react-query";
 import * as apiClient from "../api-client";
+import { loadStripe, Stripe } from "@stripe/stripe-js";
+
+const STRIPE_PUB_KEY = import.meta.env.VITE_STRIPE_PUB_KEY || "";
 
 type ToastMessage = {
   message: string;
   type: "SUCCESS" | "ERROR";
 };
 
-// 1. Define the type of the context (which holds all the properties and functions that we're going to expose to our components.)
 type AppContext = {
   showToast: (toastMessage: ToastMessage) => void;
   isLoggedIn: boolean;
+  stripePromise: Promise<Stripe | null>;
 };
 
-// 2. Create the context
 const AppContext = React.createContext<AppContext | undefined>(undefined);
 
-// 3. Create the provider (provider is a component that wraps our components)
+const stripePromise = loadStripe(STRIPE_PUB_KEY); // Since we're loading the stripe in the AppContext, stripe will load only once when the application initialize. This is good since it is not constantly loading stripe through multiple API calls which can degrade the performance
+
 export const AppContextProvider = ({
   children,
 }: {
@@ -38,13 +41,14 @@ export const AppContextProvider = ({
           setToast(toastMessage);
         },
         isLoggedIn: !isError,
+        stripePromise,
       }}
     >
       {toast && (
         <Toast
           message={toast.message}
           type={toast.type}
-          onClose={() => setToast(undefined)} // when the toast variable's state changes, it causes a re-render of the component.
+          onClose={() => setToast(undefined)}
         />
       )}
       {children}
@@ -52,7 +56,6 @@ export const AppContextProvider = ({
   );
 };
 
-// 4. Create a custom hook which lets our components easily access the provider
 export const useAppContext = () => {
   const context = useContext(AppContext);
   return context as AppContext;
