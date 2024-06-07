@@ -160,7 +160,8 @@ router.post(
         { _id: req.params.hotelId },
         {
           $push: { bookings: newBooking },
-        }
+        },
+        { new: true }
       );
 
       if (!hotel) {
