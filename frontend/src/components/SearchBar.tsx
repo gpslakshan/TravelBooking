@@ -33,7 +33,7 @@ const SearchBar = () => {
     setCheckIn(new Date());
     setCheckOut(new Date());
     setAdultCount(1);
-    setChildCount(0);
+    setChildCount(1);
     search.saveSearchValues("", new Date(), new Date(), 1, 0);
 
     sessionStorage.removeItem("destination");
