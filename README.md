@@ -2,6 +2,8 @@
 
 TravelBooking is a modern hotel booking web application that simplifies searching, booking, and managing hotel reservations. Designed with a focus on user experience and scalability, it combines a responsive interface with a robust backend to handle extensive data and interactions seamlessly. The application is rigorously tested using Playwright for end-to-end reliability.
 
+![Hotel Booking App](https://github.com/gpslakshan/TravelBooking/blob/main/frontend/public/thumbnail.png?raw=true)
+
 ## Features
 
 ### 1. **User Authentication**
